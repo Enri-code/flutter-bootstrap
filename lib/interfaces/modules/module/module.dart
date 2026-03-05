@@ -11,7 +11,7 @@ abstract class Module<RouteType> implements ModuleRoutes<RouteType> {
 
 abstract class ModuleRoutes<RouteType> {
   const ModuleRoutes();
-  Set<RouteType> get routes;
+  Set<RouteType> routes(DI injector);
 }
 
 abstract class ModuleStartup<T> {
