@@ -1,6 +1,18 @@
 import 'package:bootstrap/interfaces/toast/toast_service.dart';
 import 'package:flutter/material.dart';
 
+/// An InheritedWidget that provides access to [IToastService].
+///
+/// Wrap your app with this provider to make toast service available
+/// throughout the widget tree.
+///
+/// Example:
+/// ```dart
+/// ToastServiceProvider(
+///   service: MyToastServiceImpl(),
+///   child: MaterialApp(...),
+/// )
+/// ```
 class ToastServiceProvider extends InheritedWidget {
   const ToastServiceProvider({
     required this.service,
@@ -10,11 +22,21 @@ class ToastServiceProvider extends InheritedWidget {
 
   final IToastService service;
 
-  static IToastService? of(BuildContext context) {
+  /// Retrieves the [IToastService] from the widget tree.
+  ///
+  /// Throws [StateError] if ToastServiceProvider is not found.
+  static IToastService of(BuildContext context) {
     final provider = context
         .dependOnInheritedWidgetOfExactType<ToastServiceProvider>();
-    assert(provider != null, 'ToastServiceProvider not found in widget tree');
-    return provider?.service;
+
+    if (provider == null) {
+      throw StateError(
+        'ToastServiceProvider not found in widget tree. '
+        'Wrap your app with ToastServiceProvider.',
+      );
+    }
+
+    return provider.service;
   }
 
   @override

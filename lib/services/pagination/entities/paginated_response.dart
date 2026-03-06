@@ -1,3 +1,7 @@
+/// Metadata for a paginated API response.
+///
+/// Contains information about the current page, page size, and total count
+/// to enable pagination logic in the UI.
 class PaginationMeta {
   const PaginationMeta({
     required this.page,
@@ -10,10 +14,16 @@ class PaginationMeta {
 
   Map<String, dynamic> toJson() => _$PaginationMetaToJson(this);
 
+  /// Current page number (1-indexed).
   final int page;
+
+  /// Number of items per page.
   final int pageSize;
+
+  /// Total number of items across all pages.
   final int totalCount;
 
+  /// Creates a copy with updated fields.
   PaginationMeta copyWith({
     int? page,
     int? pageSize,
@@ -26,8 +36,13 @@ class PaginationMeta {
     );
   }
 
+  /// Total number of pages available.
   int get totalPages => (totalCount / pageSize).ceil();
+
+  /// Whether there are more pages available after the current page.
   bool get hasMore => page < totalPages;
+
+  /// The next page number.
   int get nextPage => page + 1;
 }
 

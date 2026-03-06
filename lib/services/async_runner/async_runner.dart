@@ -3,18 +3,26 @@ import 'dart:async';
 import 'package:bootstrap/definitions/result.dart';
 import 'package:flutter/material.dart';
 
+/// A utility class for running async operations with state management.
+///
+/// Provides state tracking (idle, running, success, failure) and notifies
+/// listeners of state changes. Prevents concurrent execution of the same
+/// operation.
 class AsyncRunner<E extends Object, R>
     with ChangeNotifier, AsyncState<E, R>, AsyncRunnerBase<E, R> {
   AsyncRunner(this.event);
 
+  /// Creates an AsyncRunner that accepts an argument.
   static AsyncRunnerWithArg<A, E, R> withArg<A, E extends Object, R>(
     Future<R> Function(A arg) event,
-  ) => AsyncRunnerWithArg<A, E, R>(event);
+  ) =>
+      AsyncRunnerWithArg<A, E, R>(event);
   final Future<R> Function() event;
 
   Future<R> call() => run(event);
 }
 
+/// An AsyncRunner that accepts an argument when called.
 class AsyncRunnerWithArg<A, E extends Object, R>
     with ChangeNotifier, AsyncState<E, R>, AsyncRunnerBase<E, R> {
   AsyncRunnerWithArg(this.event);
@@ -23,6 +31,10 @@ class AsyncRunnerWithArg<A, E extends Object, R>
   Future<R> call(A arg) => run(() => event(arg));
 }
 
+/// Base mixin that handles async operation execution and state management.
+///
+/// Prevents concurrent execution - if an operation is already running,
+/// subsequent calls will wait for the first one to complete.
 mixin AsyncRunnerBase<E extends Object, R> on AsyncState<E, R> {
   Future<R>? _runner;
 
@@ -55,24 +67,38 @@ mixin AsyncRunnerBase<E extends Object, R> on AsyncState<E, R> {
     }
   }
 
+  /// Resets the runner to idle state and clears any stored result.
   void reset() {
     _status = RunAsyncStatus.idle;
     _result = null;
     notifyListeners();
   }
 }
+
+/// Mixin providing state management for async operations.
 mixin AsyncState<E, R> on ChangeNotifier {
   Result<E, R>? _result;
   RunAsyncStatus _status = RunAsyncStatus.idle;
 
+  /// The result of the last async operation (if any).
   Result<E, R>? get result => _result;
+
+  /// The current status of the async operation.
   RunAsyncStatus get status => _status;
 }
 
+/// Status of an async operation.
 enum RunAsyncStatus {
+  /// No operation has been started.
   idle,
+
+  /// Operation is currently running.
   running,
+
+  /// Operation completed successfully.
   success,
+
+  /// Operation failed with an error.
   failure;
 
   bool get isIdle => this == idle;
