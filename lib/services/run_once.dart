@@ -3,6 +3,9 @@ import 'dart:async';
 abstract class RunOnce {
   factory RunOnce(FutureOr<void> Function() callback) = _RunOnce;
 
+  static RunOnceWithArg<T> withArg<T>(void Function(T) callback) =>
+      RunOnceWithArg(callback);
+
   static RunOnceAsync async(Future<void> Function() callback) =>
       RunOnceAsync(callback);
 
@@ -14,7 +17,7 @@ abstract class RunOnce {
 }
 
 abstract class RunOnceWithArg<T> {
-  factory RunOnceWithArg(FutureOr<void> Function(T) callback) = _RunOnceWithArg;
+  factory RunOnceWithArg(void Function(T) callback) = _RunOnceWithArg;
 
   bool get hasRun;
 
@@ -26,7 +29,7 @@ abstract class RunOnceWithArg<T> {
 class _RunOnceWithArg<T> implements RunOnceWithArg<T> {
   _RunOnceWithArg(this.callback);
 
-  final FutureOr<void> Function(T) callback;
+  final void Function(T) callback;
 
   bool _hasRun = false;
 
@@ -65,8 +68,6 @@ class _RunOnce implements RunOnce {
 
   @override
   void reset() => _hasRun = false;
-
-  // static async(Future<Null> Function() param0) {}
 }
 
 class RunOnceAsync implements RunOnce {
@@ -89,6 +90,4 @@ class RunOnceAsync implements RunOnce {
 
   @override
   void reset() => _hasRun = false;
-
-  // static async(Future<Null> Function() param0) {}
 }
