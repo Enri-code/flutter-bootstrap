@@ -13,6 +13,6 @@ abstract class IToastService {
     String? actionLabel,
     VoidCallback? onAction,
   });
-  void showLoading(String message);
+
   void dismiss();
 }

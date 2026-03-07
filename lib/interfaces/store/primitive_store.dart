@@ -36,18 +36,17 @@ abstract class ObjectStore<ObjectType> {
 }
 
 void _assertIsPrimitive(Type type) {
-  if (switch (type) {
-    const (bool) => true,
-    const (int) => true,
-    const (double) => true,
-    const (String) => true,
-    const (List<String>) => true,
-    _ => false,
-  }) {
-    return;
+  switch (type) {
+    case (const (bool)):
+    case (const (int)):
+    case (const (double)):
+    case (const (String)):
+    case (const (List<String>)):
+      return;
+    default:
+      throw ArgumentError(
+        '<ObjectType> must be a primitive [bool, int, double, String], '
+        'or a List<String>',
+      );
   }
-  throw ArgumentError(
-    '<ObjectType> must be a primitive [bool, int, double, String], '
-    'or a List<String>',
-  );
 }

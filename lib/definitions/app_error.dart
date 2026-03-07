@@ -1,343 +1,230 @@
-/// Error severity levels for categorizing error importance
-enum ErrorSeverity {
-  /// Informational - no action needed
-  info,
+/// How an error should be presented to the user.
+enum ErrorPresentation {
+  /// Silent - log only, don't show to user (internal errors, debugging)
+  silent,
 
-  /// Warning - user should be aware but can continue
-  warning,
+  /// Toast - show brief message at bottom/top of screen
+  toast,
 
-  /// Error - operation failed, user action may be needed
-  error,
-}
+  /// Dialog - show in a dialog/popup that requires dismissal
+  dialog,
 
-/// Error categories for better error handling and user messaging
-enum ErrorCategory {
-  /// Network connectivity issues
-  network,
-
-  /// Authentication/authorization failures
-  authentication,
-
-  /// Input validation errors
-  validation,
-
-  /// Server-side errors
-  server,
-
-  /// Data format/parsing errors
-  data,
-
-  /// Permission errors (device, API)
-  permission,
-
-  /// Resource not found
-  notFound,
-
-  /// Business logic errors
-  business,
-
-  /// Unknown/uncategorized errors
-  unknown,
+  /// Inline - show next to the input field (validation errors)
+  inline,
 }
 
 /// Base error class for all application errors.
-/// All domain errors should extend this class.
+///
+/// Use this for errors that should NOT be shown to users (internal errors).
+/// For user-facing errors, use [UserError] or [ValidationError].
 class AppError implements Exception {
   const AppError({
+    this.message,
+    this.code,
     this.error,
     this.stackTrace,
-    this.code,
-    this.message,
-    this.severity = ErrorSeverity.error,
-    this.category = ErrorCategory.unknown,
     this.isRetryable = false,
-    this.metadata,
   });
 
-  /// Creates an [UserVisibleError] from any object.
-  /// Handles common error types and provides fallback behavior.
+  /// Creates an AppError from any object.
   factory AppError.fromObject(Object e, [StackTrace? stackTrace]) {
     if (e is AppError) return e;
-    return AppError(error: e, stackTrace: stackTrace ?? StackTrace.current);
+    return AppError(
+      error: e,
+      message: e.toString(),
+      stackTrace: stackTrace ?? StackTrace.current,
+    );
   }
 
-  /// Original error object (for debugging).
-  final Object? error;
-
-  /// Stack trace (for debugging).
-  final StackTrace? stackTrace;
-
-  /// Error code (e.g., "AUTH_001", "NETWORK_TIMEOUT")
-  final String? code;
-
-  /// Human-readable error message
+  /// Human-readable message (for logs/debugging)
   final String? message;
 
-  /// Severity level of the error
-  final ErrorSeverity severity;
+  /// Error code for categorization
+  final String? code;
 
-  /// Category of the error for handling logic
-  final ErrorCategory category;
+  /// Original error object
+  final Object? error;
 
-  /// Whether this error can be retried
+  /// Stack trace for debugging
+  final StackTrace? stackTrace;
+
+  /// Whether the operation can be retried
   final bool isRetryable;
 
-  /// Additional metadata for context
-  final Map<String, dynamic>? metadata;
-
-  /// Creates a copy of this error with updated fields.
-  AppError copyWith({
-    Object? error,
-    StackTrace? stackTrace,
-    String? code,
-    String? message,
-    ErrorSeverity? severity,
-    ErrorCategory? category,
-    bool? isRetryable,
-    Map<String, dynamic>? metadata,
-  }) {
-    return AppError(
-      error: error ?? this.error,
-      stackTrace: stackTrace ?? this.stackTrace,
-      code: code ?? this.code,
-      message: message ?? this.message,
-      severity: severity ?? this.severity,
-      category: category ?? this.category,
-      isRetryable: isRetryable ?? this.isRetryable,
-      metadata: metadata ?? this.metadata,
-    );
-  }
-
-  /// Get user-friendly error message
-  String get userMessage =>
-      message ?? error?.toString() ?? 'An unexpected error occurred';
-
   @override
-  String toString() =>
-      'AppError(code: $code, message: $message, category: $category, error: $error)';
+  String toString() => 'AppError(code: $code, message: $message)';
 }
 
-/// Infrastructure layer errors (network, storage, external services)
-class InfrastructureError extends AppError {
-  const InfrastructureError({
-    super.error,
+// ============================================================================
+// USER-FACING ERRORS
+// ============================================================================
+
+/// Error that should be shown to the user.
+///
+/// This is the main error class for user-facing errors like network failures,
+/// business rule violations, etc.
+class UserError extends AppError {
+  const UserError({
+    required String message,
     super.code,
-    super.message,
+    super.error,
     super.stackTrace,
-    super.severity = ErrorSeverity.error,
-    super.category = ErrorCategory.network,
-    super.isRetryable = true,
-    super.metadata,
-  });
+    super.isRetryable,
+    this.presentation = ErrorPresentation.toast,
+  }) : super(message: message);
 
-  /// Network connectivity error
-  factory InfrastructureError.network({
-    String? message,
+  /// Resource not found
+  factory UserError.notFound({
+    String message = 'Resource not found.',
     Object? error,
     StackTrace? stackTrace,
   }) {
-    return InfrastructureError(
+    return UserError(
+      code: 'NOT_FOUND',
+      message: message,
+      error: error,
+      stackTrace: stackTrace,
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Common Error Factories
+  // ---------------------------------------------------------------------------
+
+  /// Network error - connection failed, timeout, etc.
+  factory UserError.network({
+    String message = 'Connection failed. Please check your internet.',
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
+    return UserError(
       code: 'NETWORK_ERROR',
-      message:
-          message ??
-          'Network connection failed. Please check your internet connection.',
+      message: message,
       error: error,
       stackTrace: stackTrace,
-      category: ErrorCategory.network,
       isRetryable: true,
     );
   }
 
-  /// Timeout error
-  factory InfrastructureError.timeout({
-    String? message,
-    Object? error,
-    StackTrace? stackTrace,
-  }) {
-    return InfrastructureError(
-      code: 'TIMEOUT',
-      message: message ?? 'Request timed out. Please try again.',
-      error: error,
-      stackTrace: stackTrace,
-      category: ErrorCategory.network,
-      isRetryable: true,
-    );
-  }
-
-  /// Server error (5xx)
-  factory InfrastructureError.server({
-    String? message,
+  /// Server error (5xx responses)
+  factory UserError.server({
+    String message = 'Server error. Please try again later.',
     Object? error,
     StackTrace? stackTrace,
     int? statusCode,
   }) {
-    return InfrastructureError(
-      code: 'SERVER_ERROR',
-      message: message ?? 'Server error occurred. Please try again later.',
+    return UserError(
+      code: statusCode?.toString() ?? 'SERVER_ERROR',
+      message: message,
       error: error,
       stackTrace: stackTrace,
-      category: ErrorCategory.server,
       isRetryable: true,
-      metadata: statusCode != null ? {'statusCode': statusCode} : null,
     );
   }
-}
 
-/// Domain/business logic errors
-class DomainError extends AppError {
-  const DomainError({
-    super.error,
-    super.code,
-    super.message,
-    super.stackTrace,
-    super.severity = ErrorSeverity.error,
-    super.category = ErrorCategory.business,
-    super.isRetryable = false,
-    super.metadata,
-  });
-
-  /// Authentication error
-  factory DomainError.authentication({
-    String? message,
+  /// Authentication failed
+  factory UserError.authentication({
+    String message = 'Authentication failed. Please log in again.',
     Object? error,
     StackTrace? stackTrace,
   }) {
-    return DomainError(
+    return UserError(
       code: 'AUTH_ERROR',
-      message:
-          message ?? 'Authentication failed. Please check your credentials.',
+      message: message,
       error: error,
       stackTrace: stackTrace,
-      category: ErrorCategory.authentication,
-      isRetryable: false,
+      presentation: ErrorPresentation.dialog,
     );
   }
 
-  /// Authorization error
-  factory DomainError.authorization({
-    String? message,
+  /// Permission denied (authorization)
+  factory UserError.forbidden({
+    String message = 'You do not have permission to perform this action.',
     Object? error,
     StackTrace? stackTrace,
   }) {
-    return DomainError(
+    return UserError(
       code: 'FORBIDDEN',
-      message: message ?? 'You do not have permission to perform this action.',
+      message: message,
       error: error,
       stackTrace: stackTrace,
-      category: ErrorCategory.authentication,
-      isRetryable: false,
-      severity: ErrorSeverity.warning,
     );
   }
 
-  /// Resource not found
-  factory DomainError.notFound({
-    String? resource,
-    String? message,
-    Object? error,
-    StackTrace? stackTrace,
-  }) {
-    return DomainError(
-      code: 'NOT_FOUND',
-      message: message ?? '${resource ?? 'Resource'} not found.',
-      error: error,
-      stackTrace: stackTrace,
-      category: ErrorCategory.notFound,
-      isRetryable: false,
-    );
-  }
-
-  /// Business rule violation
-  factory DomainError.businessRule({
+  /// Business logic violation
+  factory UserError.business({
     required String message,
     String? code,
     Object? error,
     StackTrace? stackTrace,
+    ErrorPresentation presentation = ErrorPresentation.dialog,
   }) {
-    return DomainError(
-      code: code ?? 'BUSINESS_RULE_VIOLATION',
+    return UserError(
+      code: code ?? 'BUSINESS_ERROR',
       message: message,
       error: error,
       stackTrace: stackTrace,
-      category: ErrorCategory.business,
-      isRetryable: false,
+      presentation: presentation,
     );
   }
-}
 
-/// Presentation layer errors (UI-specific issues)
-class PresentationError extends AppError {
-  const PresentationError({
-    super.error,
-    super.code,
-    super.message,
-    super.stackTrace,
-    super.severity = ErrorSeverity.error,
-    super.category = ErrorCategory.unknown,
-    super.isRetryable = false,
-    super.metadata,
-  });
-}
+  /// Device permission denied (camera, location, etc.)
+  factory UserError.permission({
+    required String permission,
+    String? message,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
+    return UserError(
+      code: 'PERMISSION_DENIED',
+      message: message ?? '$permission permission is required.',
+      error: error,
+      stackTrace: stackTrace,
+      presentation: ErrorPresentation.dialog,
+    );
+  }
 
-/// User-visible errors with custom messages for display
-class UserVisibleError extends PresentationError {
-  const UserVisibleError({
-    String message = defaultMessage,
-    super.error,
-    super.stackTrace,
-    super.code,
-    super.severity = ErrorSeverity.error,
-    super.category = ErrorCategory.unknown,
-    super.isRetryable = false,
-    super.metadata,
-  }) : super(message: message);
+  /// How to present this error to the user
+  final ErrorPresentation presentation;
 
   @override
-  String toString() =>
-      'UserVisibleError($message, error: $error, \n$stackTrace)';
-
-  static const defaultMessage = 'An error occurred. Please try again later.';
+  String toString() => 'UserError(code: $code, message: $message)';
 }
 
-/// Validation errors with field-level details
-class ValidationError extends PresentationError {
+// ============================================================================
+// VALIDATION ERRORS
+// ============================================================================
+
+/// Validation error with field-level details.
+///
+/// Use this for form validation errors that should be shown inline next to
+/// input fields.
+class ValidationError extends AppError {
   const ValidationError({
-    super.error,
-    super.stackTrace,
-    super.message = 'Validation failed. Please check your input.',
-    this.fields,
-  }) : super(
-         code: 'VALIDATION_ERROR',
-         category: ErrorCategory.validation,
-         severity: ErrorSeverity.warning,
-         isRetryable: false,
-       );
+    String message = 'Please fix the errors below.',
+    this.fields = const {},
+  }) : super(message: message, code: 'VALIDATION_ERROR');
+
+  /// Creates a validation error for a single field
+  factory ValidationError.field(String fieldName, String errorMessage) {
+    return ValidationError(
+      fields: {fieldName: errorMessage},
+      message: errorMessage,
+    );
+  }
 
   /// Field-specific error messages (field name -> error message)
-  final Map<String, String>? fields;
+  final Map<String, String> fields;
 
   /// Get error message for a specific field
-  String? getFieldError(String fieldName) => fields?[fieldName];
+  String? getFieldError(String fieldName) => fields[fieldName];
 
   /// Check if a specific field has an error
-  bool hasFieldError(String fieldName) =>
-      fields?.containsKey(fieldName) ?? false;
-}
+  bool hasFieldError(String fieldName) => fields.containsKey(fieldName);
 
-/// Device permission errors
-class DevicePermissionError extends InfrastructureError {
-  const DevicePermissionError(
-    this.permission, {
-    String? message,
-  }) : super(
-         code: 'PERMISSION_DENIED',
-         message: message ?? '$permission permission is denied.',
-         category: ErrorCategory.permission,
-         severity: ErrorSeverity.warning,
-         isRetryable: false,
-         error: '$permission permission is denied.',
-       );
+  /// Whether this validation error has any field errors
+  bool get hasErrors => fields.isNotEmpty;
 
-  /// The permission that was denied
-  final String permission;
+  @override
+  String toString() => 'ValidationError(fields: $fields)';
 }

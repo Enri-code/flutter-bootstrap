@@ -6,7 +6,7 @@ import 'package:bootstrap/interfaces/http/oauth_token/models/oauth_token.dart';
 ///   "access_token": "...",
 ///   "refresh_token": "...",
 ///   "token_type": "Bearer",
-///   "expires_at": "2025-11-10T12:00:00Z",
+///   "expires_in": 86400,  // seconds
 ///   "scopes": ["profile","email"]
 /// }
 final class OAuthTokenCodec {
@@ -30,13 +30,18 @@ final class OAuthTokenCodec {
         ? json.decode(source) as Map<String, dynamic>
         : source as Map<String, dynamic>;
 
+    // Calculate expiresAt from expires_in (seconds)
+    DateTime? expiresAt;
+    if (map['expires_in'] != null) {
+      final expiresInSeconds = map['expires_in'] as int;
+      expiresAt = DateTime.now().add(Duration(seconds: expiresInSeconds));
+    }
+
     return OAuthToken(
       accessToken: map['access_token'] as String,
       refreshToken: map['refresh_token'] as String?,
       tokenType: (map['token_type'] as String?) ?? 'Bearer',
-      expiresAt: map['expires_at'] != null
-          ? DateTime.tryParse(map['expires_at'] as String)?.toUtc()
-          : null,
+      expiresAt: expiresAt,
       scopes: (map['scopes'] as List?)?.map((e) => e.toString()).toList(),
     );
   }
