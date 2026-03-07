@@ -2,6 +2,8 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 /// A sealed class representing either a successful result ([Data]) or
 /// an error result ([Error]).
 ///
@@ -48,6 +50,7 @@ sealed class Result<Error, Data> {
   }
 }
 
+@immutable
 class _Error<Error, Data> extends Result<Error, Data> {
   const _Error(this.value);
   final Error value;
@@ -62,6 +65,7 @@ class _Error<Error, Data> extends Result<Error, Data> {
   int get hashCode => value.hashCode;
 }
 
+@immutable
 class _Data<Error, Data> extends Result<Error, Data> {
   const _Data(this.value);
   final Data value;
