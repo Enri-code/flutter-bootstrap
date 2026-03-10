@@ -32,9 +32,11 @@ final class OAuthTokenCodec {
 
     // Calculate expiresAt from expires_in (seconds)
     DateTime? expiresAt;
-    if (map['expires_in'] != null) {
+    if (map['expires_in'] is int) {
       final expiresInSeconds = map['expires_in'] as int;
       expiresAt = DateTime.now().add(Duration(seconds: expiresInSeconds));
+    } else if (map['expires_at'] is String) {
+      expiresAt = DateTime.tryParse(map['expires_at'] as String);
     }
 
     return OAuthToken(
