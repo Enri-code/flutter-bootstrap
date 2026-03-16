@@ -188,6 +188,9 @@ class UserError extends AppError {
   final ErrorPresentation presentation;
 
   @override
+  String get message => super.message ?? 'An error occurred.';
+
+  @override
   String toString() => 'UserError(code: $code, message: $message)';
 }
 
