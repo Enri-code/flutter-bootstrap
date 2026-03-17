@@ -35,6 +35,29 @@ abstract class ObjectStore<ObjectType> {
   Future<void> delete();
 }
 
+abstract class StreamableKVPrimitiveStore extends KVPrimitiveStore {
+  Stream<V?> watch<V>(String key);
+  void dispose();
+}
+
+abstract class StreamableKVObjectStore<ObjectType>
+    extends KVObjectStore<ObjectType> {
+  Stream<ObjectType?> watch(String key);
+  void dispose();
+}
+
+abstract class StreamablePrimitiveStore<ObjectType>
+    extends PrimitiveStore<ObjectType> {
+  Stream<ObjectType?> watch();
+  void dispose();
+}
+
+abstract class StreamableObjectStore<ObjectType>
+    extends ObjectStore<ObjectType> {
+  Stream<ObjectType?> watch();
+  void dispose();
+}
+
 void _assertIsPrimitive(Type type) {
   switch (type) {
     case (const (bool)):
