@@ -15,11 +15,7 @@ abstract class TimeService {
 
   /// Throws [SystemTimeNotAutomaticException]
   /// if system time is manual and NTP fails.
-  Stream<void> trackTime(
-    Duration time, {
-    bool emitIfPastTime = false,
-    bool repeat = false,
-  });
+  Stream<void> trackTimeOfDay(Duration time, {bool repeat = false});
 }
 
 /// Exception thrown when system time is not set to automatic
