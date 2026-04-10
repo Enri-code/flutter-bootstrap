@@ -1,6 +1,6 @@
+import 'package:bootstrap/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bootstrap/core.dart';
 
 class BootstrapTextField extends StatelessWidget {
   const BootstrapTextField({

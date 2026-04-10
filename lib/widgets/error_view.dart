@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:bootstrap/core.dart';
+import 'package:flutter/material.dart';
 
 /// A premium error view component for displaying failures in a user-friendly way.
 class BootstrapErrorView extends StatelessWidget {
@@ -39,9 +39,11 @@ class BootstrapErrorView extends StatelessWidget {
       children: [
         if (!isSmall) ...[
           Container(
-            padding: const EdgeInsets.all(BootstrapSpacing.l),
+            padding: const EdgeInsets.all(BootstrapSpacing.lg),
             decoration: BoxDecoration(
-              color: (iconColor ?? theme.colorScheme.error).withValues(alpha: 0.1),
+              color: (iconColor ?? theme.colorScheme.error).withValues(
+                alpha: 0.1,
+              ),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -50,7 +52,7 @@ class BootstrapErrorView extends StatelessWidget {
               color: iconColor ?? theme.colorScheme.error,
             ),
           ),
-          const SizedBox(height: BootstrapSpacing.l),
+          const SizedBox(height: BootstrapSpacing.lg),
           Text(
             title ?? '',
             style: context.textTheme.headlineSmall?.bold.copyWith(
@@ -60,7 +62,7 @@ class BootstrapErrorView extends StatelessWidget {
           const SizedBox(height: BootstrapSpacing.xs),
         ] else ...[
           Icon(icon, size: 32, color: iconColor ?? theme.colorScheme.error),
-          const SizedBox(height: BootstrapSpacing.s),
+          const SizedBox(height: BootstrapSpacing.sm),
         ],
         Text(
           message,
@@ -83,7 +85,7 @@ class BootstrapErrorView extends StatelessWidget {
     return Center(
       child: Padding(
         padding: EdgeInsets.all(
-          isSmall ? BootstrapSpacing.m : BootstrapSpacing.l,
+          isSmall ? BootstrapSpacing.md : BootstrapSpacing.lg,
         ),
         child: isSmall && onRetry != null
             ? AnimatedScaleTap(onTap: onRetry, child: content)

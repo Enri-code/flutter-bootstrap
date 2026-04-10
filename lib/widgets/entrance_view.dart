@@ -1,6 +1,6 @@
+import 'package:bootstrap/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:bootstrap/core.dart';
 
 /// Wraps a column or list of children and seamlessly stagger-animates them
 /// sliding and fading up gracefully. Gives a highly premium, reactive feel

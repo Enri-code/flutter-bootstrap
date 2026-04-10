@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:bootstrap/core.dart';
+import 'package:flutter/material.dart';
 
 class BootstrapInfoTile extends StatelessWidget {
   const BootstrapInfoTile({

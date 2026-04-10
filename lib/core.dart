@@ -12,7 +12,6 @@ export 'interfaces/logger/performance_logger.dart';
 // Services
 export 'services/async_runner/multi_async_runner_listener.dart';
 export 'services/launcher/launcher_service.dart';
-export 'utils/launcher_utils.dart';
 export 'services/pagination/entities/page_params.dart';
 export 'services/pagination/entities/paginated_response.dart';
 export 'services/pagination/entities/paginated_result.dart';

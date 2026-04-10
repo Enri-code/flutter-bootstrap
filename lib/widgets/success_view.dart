@@ -52,7 +52,7 @@ class BootstrapSuccessView extends StatelessWidget {
               textAlign: TextAlign.center,
               style: context.textTheme.headlineSmall?.bold,
             ).animate().fade(delay: 200.ms).slideY(begin: 0.2),
-            const SizedBox(height: BootstrapSpacing.m),
+            const SizedBox(height: BootstrapSpacing.md),
             Text(
               message,
               textAlign: TextAlign.center,
