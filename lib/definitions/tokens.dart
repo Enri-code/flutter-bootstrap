@@ -39,14 +39,16 @@ abstract class BootstrapRadii {
   static const double modal = BootstrapSpacing.lg;    // 24
 
   // Aliases for the codebase
-  static const double borderRadiusXs = xs;
-  static const double borderRadiusS = s;
-  static const double borderRadiusSm = sm;
-  static const double borderRadiusM = m;
-  static const double borderRadiusMd = md;
-  static const double borderRadiusLg = lg;
-  static const double borderRadiusXl = xl;
-  static const double borderRadiusXxl = xxl;
-  static const double borderRadiusCard = card;
-  static const double borderRadiusDialog = modal;
+  static const BorderRadius borderRadiusXs = BorderRadius.all(Radius.circular(xs));
+  static const BorderRadius borderRadiusS = BorderRadius.all(Radius.circular(s));
+  static const BorderRadius borderRadiusSm = BorderRadius.all(Radius.circular(sm));
+  static const BorderRadius borderRadiusM = BorderRadius.all(Radius.circular(m));
+  static const BorderRadius borderRadiusMd = BorderRadius.all(Radius.circular(md));
+  static const BorderRadius borderRadiusL = BorderRadius.all(Radius.circular(l));
+  static const BorderRadius borderRadiusLg = BorderRadius.all(Radius.circular(lg));
+  static const BorderRadius borderRadiusXl = BorderRadius.all(Radius.circular(xl));
+  static const BorderRadius borderRadiusXxl = BorderRadius.all(Radius.circular(xxl));
+  static const BorderRadius borderRadiusCard = BorderRadius.all(Radius.circular(card));
+  static const BorderRadius borderRadiusDialog = BorderRadius.all(Radius.circular(modal));
 }
+
