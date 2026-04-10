@@ -1,7 +1,7 @@
 name: bootstrap
 description: Core entities, components, interfaces, repositories, events etc.
 publish_to: none
-version: 0.5.0
+version: 0.5.1
 
 environment:
   sdk: ^3.9.2
@@ -10,7 +10,7 @@ environment:
 dependencies:
   event_bus: ^2.0.1
   url_launcher: ^6.3.2
-  flutter_animate: ^4.5.3
+  flutter_animate: ^4.5.2
   shimmer: ^3.0.0
 
   flutter:

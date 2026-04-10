@@ -39,7 +39,7 @@ class BootstrapErrorView extends StatelessWidget {
       children: [
         if (!isSmall) ...[
           Container(
-            padding: const EdgeInsets.all(BootstrapSpacing.lg),
+            padding: const EdgeInsets.all(BootstrapSpacing.l),
             decoration: BoxDecoration(
               color: (iconColor ?? theme.colorScheme.error).withValues(alpha: 0.1),
               shape: BoxShape.circle,
@@ -50,7 +50,7 @@ class BootstrapErrorView extends StatelessWidget {
               color: iconColor ?? theme.colorScheme.error,
             ),
           ),
-          const SizedBox(height: BootstrapSpacing.lg),
+          const SizedBox(height: BootstrapSpacing.l),
           Text(
             title ?? '',
             style: context.textTheme.headlineSmall?.bold.copyWith(

@@ -1,6 +1,6 @@
+import 'package:bootstrap/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:bootstrap/core.dart';
 
 class BootstrapSuccessView extends StatelessWidget {
   const BootstrapSuccessView({
@@ -46,7 +46,7 @@ class BootstrapSuccessView extends StatelessWidget {
                   begin: const Offset(0.5, 0.5),
                 )
                 .shimmer(delay: 400.ms, duration: 1.seconds),
-            const SizedBox(height: BootstrapSpacing.xxl),
+            const SizedBox(height: BootstrapSpacing.xl),
             Text(
               title,
               textAlign: TextAlign.center,
@@ -61,7 +61,7 @@ class BootstrapSuccessView extends StatelessWidget {
               ),
             ).animate().fade(delay: 400.ms).slideY(begin: 0.2),
             if (actionLabel != null && onAction != null) ...[
-              const SizedBox(height: BootstrapSpacing.xxl),
+              const SizedBox(height: BootstrapSpacing.xl),
               BootstrapButton(
                 label: actionLabel!,
                 onPressed: onAction,
