@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:bootstrap/core.dart';
-import 'package:bootstrap/definitions/tokens.dart';
+import 'package:flutter/material.dart';
 
 enum BootstrapButtonType { primary, secondary, outline, text, danger }
 
@@ -97,7 +96,7 @@ class BootstrapButton extends StatelessWidget {
         height: height,
         padding:
             padding ??
-            const EdgeInsets.symmetric(horizontal: BootstrapSpacing.m),
+            const EdgeInsets.symmetric(horizontal: BootstrapSpacing.md),
         decoration: BoxDecoration(
           color: bg,
           borderRadius: BorderRadius.circular(BootstrapRadii.button),
