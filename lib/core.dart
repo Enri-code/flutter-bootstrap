@@ -3,6 +3,7 @@ export 'definitions/animations.dart';
 export 'definitions/tokens.dart';
 // Extensions
 export 'extensions/stream_extension.dart';
+export 'extensions/string_extension.dart';
 export 'extensions/theme_extension.dart';
 // Interfaces
 export 'interfaces/di/di.dart';
@@ -11,6 +12,7 @@ export 'interfaces/logger/performance_logger.dart';
 // Services
 export 'services/async_runner/multi_async_runner_listener.dart';
 export 'services/launcher/launcher_service.dart';
+export 'utils/launcher_utils.dart';
 export 'services/pagination/entities/page_params.dart';
 export 'services/pagination/entities/paginated_response.dart';
 export 'services/pagination/entities/paginated_result.dart';
