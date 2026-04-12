@@ -39,7 +39,7 @@ class BootstrapErrorView extends StatelessWidget {
       children: [
         if (!isSmall) ...[
           Container(
-            padding: const EdgeInsets.all(BootstrapSpacing.lg),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: (iconColor ?? theme.colorScheme.error).withValues(
                 alpha: 0.1,
@@ -52,17 +52,17 @@ class BootstrapErrorView extends StatelessWidget {
               color: iconColor ?? theme.colorScheme.error,
             ),
           ),
-          const SizedBox(height: BootstrapSpacing.lg),
+          const SizedBox(height: 24),
           Text(
             title ?? '',
             style: context.textTheme.headlineSmall?.bold.copyWith(
               color: textColor ?? theme.textTheme.bodyLarge?.color,
             ),
           ),
-          const SizedBox(height: BootstrapSpacing.xs),
+          const SizedBox(height: 8),
         ] else ...[
           Icon(icon, size: 32, color: iconColor ?? theme.colorScheme.error),
-          const SizedBox(height: BootstrapSpacing.sm),
+          const SizedBox(height: 12),
         ],
         Text(
           message,
@@ -72,7 +72,7 @@ class BootstrapErrorView extends StatelessWidget {
           ),
         ),
         if (onRetry != null && !isSmall) ...[
-          const SizedBox(height: BootstrapSpacing.xl),
+          const SizedBox(height: 32),
           ElevatedButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh_rounded),
@@ -85,7 +85,7 @@ class BootstrapErrorView extends StatelessWidget {
     return Center(
       child: Padding(
         padding: EdgeInsets.all(
-          isSmall ? BootstrapSpacing.md : BootstrapSpacing.lg,
+          isSmall ? 16 : 24,
         ),
         child: isSmall && onRetry != null
             ? AnimatedScaleTap(onTap: onRetry, child: content)

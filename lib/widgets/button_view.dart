@@ -96,10 +96,10 @@ class BootstrapButton extends StatelessWidget {
         height: height,
         padding:
             padding ??
-            const EdgeInsets.symmetric(horizontal: BootstrapSpacing.md),
+            const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           color: bg,
-          borderRadius: BorderRadius.circular(BootstrapRadii.button),
+          borderRadius: BorderRadius.circular(12),
           border: borderSide != BorderSide.none
               ? Border.fromBorderSide(borderSide)
               : null,
@@ -114,7 +114,7 @@ class BootstrapButton extends StatelessWidget {
                   children: [
                     if (icon != null) ...[
                       Icon(icon, color: fg, size: 20),
-                      const SizedBox(width: BootstrapSpacing.xs),
+                      const SizedBox(width: 8),
                     ],
                     Text(
                       label,

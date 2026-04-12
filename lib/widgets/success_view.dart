@@ -22,7 +22,7 @@ class BootstrapSuccessView extends StatelessWidget {
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(BootstrapSpacing.xl),
+        padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -46,13 +46,13 @@ class BootstrapSuccessView extends StatelessWidget {
                   begin: const Offset(0.5, 0.5),
                 )
                 .shimmer(delay: 400.ms, duration: 1.seconds),
-            const SizedBox(height: BootstrapSpacing.xl),
+            const SizedBox(height: 32),
             Text(
               title,
               textAlign: TextAlign.center,
               style: context.textTheme.headlineSmall?.bold,
             ).animate().fade(delay: 200.ms).slideY(begin: 0.2),
-            const SizedBox(height: BootstrapSpacing.md),
+            const SizedBox(height: 16),
             Text(
               message,
               textAlign: TextAlign.center,
@@ -61,7 +61,7 @@ class BootstrapSuccessView extends StatelessWidget {
               ),
             ).animate().fade(delay: 400.ms).slideY(begin: 0.2),
             if (actionLabel != null && onAction != null) ...[
-              const SizedBox(height: BootstrapSpacing.xl),
+              const SizedBox(height: 32),
               BootstrapButton(
                 label: actionLabel!,
                 onPressed: onAction,

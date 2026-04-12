@@ -1,6 +1,5 @@
 // Definitions
 export 'definitions/animations.dart';
-export 'definitions/tokens.dart';
 // Extensions
 export 'extensions/stream_extension.dart';
 export 'extensions/string_extension.dart';
@@ -17,19 +16,15 @@ export 'services/pagination/entities/paginated_response.dart';
 export 'services/pagination/entities/paginated_result.dart';
 // Widgets
 export 'widgets/animated_scale_tap.dart';
-export 'widgets/avatar_view.dart';
 export 'widgets/button_view.dart';
 export 'widgets/card_view.dart';
-export 'widgets/choice_chip_view.dart';
 export 'widgets/dialog_view.dart';
 export 'widgets/empty_view.dart';
 export 'widgets/entrance_view.dart';
 export 'widgets/error_view.dart';
 export 'widgets/info_tile.dart';
 export 'widgets/loading_indicator.dart';
-export 'widgets/metrics_view.dart';
 export 'widgets/search_field_view.dart';
-export 'widgets/settings_view.dart';
 export 'widgets/shimmer_view.dart';
 export 'widgets/slide_fade_transition.dart';
 export 'widgets/success_view.dart';

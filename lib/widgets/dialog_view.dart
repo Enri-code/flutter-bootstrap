@@ -1,6 +1,7 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
+
 import 'package:bootstrap/core.dart';
+import 'package:flutter/material.dart';
 
 enum BootstrapDialogType { info, success, warning, error, destructive }
 
@@ -52,7 +53,7 @@ class BootstrapDialog extends StatelessWidget {
       barrierLabel: 'BootstrapDialog',
       barrierColor: Colors.black.withValues(alpha: 0.4),
       transitionDuration: const Duration(milliseconds: 300),
-      pageBuilder: (context, _, __) => BootstrapDialog(
+      pageBuilder: (context, _, _) => BootstrapDialog(
         title: title,
         content: content,
         type: type,
@@ -64,12 +65,7 @@ class BootstrapDialog extends StatelessWidget {
         actionsBuilder: actionsBuilder,
         iconColor: iconColor,
       ),
-      transitionBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-      ) {
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
         return BackdropFilter(
           filter: ImageFilter.blur(
             sigmaX: 5 * animation.value,
@@ -89,31 +85,32 @@ class BootstrapDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final effectiveType = isDestructive ? BootstrapDialogType.destructive : type;
+    final effectiveType = isDestructive
+        ? BootstrapDialogType.destructive
+        : type;
 
-    final color = iconColor ??
+    final color =
+        iconColor ??
         switch (effectiveType) {
           BootstrapDialogType.success => Colors.green,
           BootstrapDialogType.warning => Colors.orange,
           BootstrapDialogType.error ||
-          BootstrapDialogType.destructive =>
-            theme.colorScheme.error,
+          BootstrapDialogType.destructive => theme.colorScheme.error,
           _ => theme.primaryColor,
         };
 
-    final effectiveIcon = icon ??
+    final effectiveIcon =
+        icon ??
         switch (effectiveType) {
           BootstrapDialogType.success => Icons.check_circle_rounded,
           BootstrapDialogType.warning => Icons.warning_rounded,
           BootstrapDialogType.error ||
-          BootstrapDialogType.destructive =>
-            Icons.error_rounded,
+          BootstrapDialogType.destructive => Icons.error_rounded,
           _ => Icons.info_rounded,
         };
 
     return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 40),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: theme.cardColor,

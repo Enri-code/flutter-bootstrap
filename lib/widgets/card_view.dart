@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:bootstrap/core.dart';
-import 'package:bootstrap/definitions/tokens.dart';
+import 'package:flutter/material.dart';
+
 
 class BootstrapCard extends StatelessWidget {
   const BootstrapCard({
     required this.child,
     super.key,
-    this.padding = const EdgeInsets.all(BootstrapSpacing.cardPadding),
+    this.padding = const EdgeInsets.all(24),
     this.width,
     this.height,
     this.color = Colors.white,
@@ -38,7 +38,7 @@ class BootstrapCard extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         color: color,
-        borderRadius: borderRadius ?? BorderRadius.circular(BootstrapRadii.card),
+        borderRadius: borderRadius ?? BorderRadius.circular(16),
         border: Border.all(
           color: borderColor ?? theme.dividerColor,
           width: 1.2,
@@ -52,7 +52,7 @@ class BootstrapCard extends StatelessWidget {
         ],
       ),
       child: ClipRRect(
-        borderRadius: borderRadius ?? BorderRadius.circular(BootstrapRadii.card),
+        borderRadius: borderRadius ?? BorderRadius.circular(16),
         child: Padding(padding: padding, child: child),
       ),
     );
