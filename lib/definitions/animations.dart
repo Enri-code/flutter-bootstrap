@@ -1,20 +1,5 @@
 import 'package:flutter/animation.dart';
 
-abstract class BootstrapDurations {
-  static const int fastest = 50;
-  static const int fast = 100;
-  static const int normal = 200;
-  static const int moderate = 300;
-  static const int slow = 400;
-  static const int slower = 600;
-  static const int slowest = 1000;
-
-  static const int pageTransition = 300;
-  static const int dialogTransition = 200;
-  static const int buttonPress = 100;
-  static const int shimmer = 1500;
-}
-
 abstract class BootstrapAnimations {
   // Standard Curves
   static const Curve easeIn = Curves.easeIn;
@@ -42,35 +27,11 @@ abstract class BootstrapAnimations {
 
   // Durations
   static const Duration instant = Duration.zero;
-  static const Duration fastest = Duration(
-    milliseconds: BootstrapDurations.fastest,
-  );
-  static const Duration fast = Duration(milliseconds: BootstrapDurations.fast);
-  static const Duration normal = Duration(
-    milliseconds: BootstrapDurations.normal,
-  );
-  static const Duration moderate = Duration(
-    milliseconds: BootstrapDurations.moderate,
-  );
-  static const Duration slow = Duration(milliseconds: BootstrapDurations.slow);
-  static const Duration slower = Duration(
-    milliseconds: BootstrapDurations.slower,
-  );
-  static const Duration slowest = Duration(
-    milliseconds: BootstrapDurations.slowest,
-  );
-
-  // Semantic durations
-  static const Duration pageTransition = Duration(
-    milliseconds: BootstrapDurations.pageTransition,
-  );
-  static const Duration dialogTransition = Duration(
-    milliseconds: BootstrapDurations.dialogTransition,
-  );
-  static const Duration buttonPress = Duration(
-    milliseconds: BootstrapDurations.buttonPress,
-  );
-  static const Duration shimmer = Duration(
-    milliseconds: BootstrapDurations.shimmer,
-  );
+  static const Duration fastest = Duration(milliseconds: 50);
+  static const Duration fast = Duration(milliseconds: 100);
+  static const Duration normal = Duration(milliseconds: 200);
+  static const Duration moderate = Duration(milliseconds: 300);
+  static const Duration slow = Duration(milliseconds: 400);
+  static const Duration slower = Duration(milliseconds: 600);
+  static const Duration slowest = Duration(milliseconds: 1000);
 }

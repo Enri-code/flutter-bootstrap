@@ -7,7 +7,7 @@ extension StringExtensions on String {
   /// Example: 'hello' -> 'Hello'
   String capitalizeFirst() {
     if (isEmpty) return this;
-    return '${this[0].toUpperCase()}${substring(1)}';
+    return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
   }
 
   /// Adds an 's' to the end of the string for pluralization.

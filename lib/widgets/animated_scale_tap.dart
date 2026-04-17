@@ -37,10 +37,7 @@ class _AnimatedScaleTapState extends State<AnimatedScaleTap>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration ?? BootstrapAnimations.buttonPress,
-    );
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _scaleAnimation = Tween<double>(begin: 1, end: widget.scaleValue).animate(
       CurvedAnimation(

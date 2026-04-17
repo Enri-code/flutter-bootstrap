@@ -65,9 +65,9 @@ class SlideFadePageRoute<T> extends PageRouteBuilder<T> {
     super.settings,
   }) : super(
          pageBuilder: (context, animation, secondaryAnimation) => child,
-         transitionDuration: duration ?? BootstrapAnimations.pageTransition,
+         transitionDuration: duration ?? const Duration(milliseconds: 300),
          reverseTransitionDuration:
-             duration ?? BootstrapAnimations.pageTransition,
+             duration ?? const Duration(milliseconds: 300),
          transitionsBuilder: (context, animation, secondaryAnimation, child) {
            final effectiveCurve = curve ?? BootstrapAnimations.emphasized;
 

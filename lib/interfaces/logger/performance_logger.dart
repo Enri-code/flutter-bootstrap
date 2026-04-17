@@ -28,6 +28,9 @@ abstract class PerformanceLogger {
   /// The operation name should be descriptive, like 'task_completion'
   /// or 'upload_audio'.
   PerformanceTimer start(String operationName);
+
+  /// Track a one-shot metric value (e.g. cache_hits, file_size).
+  void trackMetric(String name, num value, {Map<String, dynamic>? extra});
 }
 
 /// A timer for measuring operation duration.
@@ -40,33 +43,10 @@ abstract class PerformanceTimer {
   /// Add [extra] metadata for additional context.
   void stop({bool failed = false, Map<String, dynamic>? extra});
 
+  /// Attach a custom metric to this specific timer/transaction.
+  /// [unit] can be 'ms', 'byte', etc. depending on the implementation.
+  void setMeasurement(String name, num value, {String? unit});
+
   /// Get elapsed time (useful for logging)
   Duration get elapsed;
-}
-
-/// No-op implementation when performance tracking is disabled.
-class NoOpPerformanceLogger extends PerformanceLogger {
-  const NoOpPerformanceLogger();
-
-  @override
-  FutureOr<void> init() {}
-
-  @override
-  PerformanceTimer start(String operationName) {
-    return _NoOpPerformanceTimer();
-  }
-}
-
-class _NoOpPerformanceTimer implements PerformanceTimer {
-  _NoOpPerformanceTimer() : _stopwatch = Stopwatch()..start();
-
-  final Stopwatch _stopwatch;
-
-  @override
-  void stop({bool failed = false, Map<String, dynamic>? extra}) {
-    _stopwatch.stop();
-  }
-
-  @override
-  Duration get elapsed => _stopwatch.elapsed;
 }

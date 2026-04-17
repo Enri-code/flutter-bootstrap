@@ -1,7 +1,7 @@
 name: bootstrap
 description: Core entities, components, interfaces, repositories, events etc.
 publish_to: none
-version: 0.5.5
+version: 0.5.6
 
 environment:
   sdk: ^3.9.2
