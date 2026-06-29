@@ -25,6 +25,7 @@ class BootstrapTextField extends StatelessWidget {
     this.obscureText = false,
     this.enableClear = false,
     this.textCapitalization = TextCapitalization.none,
+    this.autovalidateMode,
     super.key,
   });
 
@@ -49,6 +50,7 @@ class BootstrapTextField extends StatelessWidget {
   final bool obscureText;
   final bool enableClear;
   final TextCapitalization textCapitalization;
+  final AutovalidateMode? autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +81,7 @@ class BootstrapTextField extends StatelessWidget {
           inputFormatters: inputFormatters,
           obscureText: obscureText,
           textCapitalization: textCapitalization,
+          autovalidateMode: autovalidateMode,
           style: context.textTheme.bodyMedium?.semiBold,
           minLines: lineCount,
           maxLines: maxLines ?? lineCount,
