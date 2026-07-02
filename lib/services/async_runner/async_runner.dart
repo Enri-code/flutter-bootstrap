@@ -64,6 +64,12 @@ mixin AsyncRunnerBase<E extends Object, R> on AsyncState<E, R> {
       notifyListeners();
 
       rethrow;
+    } catch (e) {
+      _status = RunAsyncStatus.failure;
+      _runner = null;
+      notifyListeners();
+
+      rethrow;
     }
   }
 
